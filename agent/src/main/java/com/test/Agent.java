@@ -13,11 +13,21 @@ public class Agent {
 
     public static void premain(String agentArgs, Instrumentation inst) {
         System.out.println("Agent.premain");
+        Class[] klasss = inst.getAllLoadedClasses();
+        for(int i = 0; i < klasss.length; i++){
+            System.out.println(klasss[i].getName());
+        }
         inst.addTransformer(new MyClassTransformer());
+        inst.addTransformer(new CleanerTransformer());
     }
 
     public static void agentmain(String agentArgs, Instrumentation inst) {
         System.out.println("Agent.agentmain");
+        Class[] klasss = inst.getAllLoadedClasses();
+        for(int i = 0; i < klasss.length; i++){
+            System.out.println(klasss[i].getName());
+        }
         inst.addTransformer(new MyClassTransformer());
+        inst.addTransformer(new CleanerTransformer());
     }
 }
