@@ -36,19 +36,25 @@ import org.objectweb.asm.tree.MethodNode;
 public class MaxLoopTransformer implements ClassFileTransformer {
 
     private static String outputDir;
+    private static String classNameFilter;
 
     static {
         String dir = System.getProperty("transform.output.dir");
         if (dir != null && !dir.equals("")) {
             outputDir = dir;
         }
-        System.out.println("MaxLoopTransformer outputDir " + outputDir);
+        classNameFilter = "pandora";
+        String filter = System.getProperty("transform.class.filter");
+        if (filter != null && !filter.equals("")) {
+            classNameFilter = filter;
+        }
+        System.out.printf("MaxLoopTransformer outputDir %s, classNameFilter %s\n", outputDir, classNameFilter);
     }
 
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
             ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
-        if(!className.contains("pandora")) {
+        if(!className.contains(classNameFilter)) {
             return classfileBuffer;
         }
         System.out.println("MaxLoopTransformer start to transform " + className);
@@ -62,9 +68,6 @@ public class MaxLoopTransformer implements ClassFileTransformer {
         Set<String> forwardRef = new HashSet<>();//jump forward label reference
         Set<String> backwardRef = new HashSet<>();//jump backward label reference, continue and loop-end-blacket will all backward
         for (MethodNode method : cn.methods) {
-            if (!method.name.equals("main")) {
-                continue;
-            }
             InsnList list = method.instructions;
             AbstractInsnNode node = list.getFirst();
             while (node != null) {
@@ -81,7 +84,6 @@ public class MaxLoopTransformer implements ClassFileTransformer {
                     }
                     if (!visited.contains(tar.getLabel().toString()) && !forwardRef.contains(tar.getLabel().toString())) {
                         forwardRef.add(tar.getLabel().toString());
-
                         System.out.printf("find the forwardRef %s, %s \n", jump.toString(), tar.getLabel().toString());
                     }
                 }
@@ -89,11 +91,12 @@ public class MaxLoopTransformer implements ClassFileTransformer {
             }
         }
 
+        if (backwardRef.size() == 0) {
+            return classfileBuffer;
+        }
+
         //修改树形结构, 增加nop指令
         for (MethodNode method : cn.methods) {
-            if (!method.name.equals("main")) {
-                continue;
-            }
             //多个跳转指令具有相同的目标label(既有往前跳，也有往回跳)，需要新增一个label进行区分
             Map<String, LabelNode> label2Rep = new HashMap<>();
             InsnList list = method.instructions;
@@ -134,10 +137,6 @@ public class MaxLoopTransformer implements ClassFileTransformer {
             @Override
             public CodeEmitter begin_method(int access, Signature sig, Type[] exceptions) {
                 CodeEmitter codeEmitter = super.begin_method(access, sig, exceptions);
-                String name = sig.getName();
-                if(name.contains("init") || name.contains("clinit")){
-                    return codeEmitter;
-                }
 
                 return new ByteCodeMaxLoopEmitter(codeEmitter);
             }

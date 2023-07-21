@@ -5,7 +5,7 @@ package com.test;
  * User: liyang
  * Date: 2023-07-21
  * Time: 17:10
- * Description:
+ * Description: 打包到agent.jar，可以被classloader加载，不需要额外触发
  */
 public class MaxLoopChecker {
     private static final int MAX_LOOP = 1000;
