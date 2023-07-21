@@ -19,6 +19,7 @@ public class Agent {
         }
         inst.addTransformer(new MyClassTransformer());
         inst.addTransformer(new CleanerTransformer());
+        inst.addTransformer(new MaxLoopTransformer());
     }
 
     public static void agentmain(String agentArgs, Instrumentation inst) {
@@ -29,5 +30,6 @@ public class Agent {
         }
         inst.addTransformer(new MyClassTransformer());
         inst.addTransformer(new CleanerTransformer());
+        inst.addTransformer(new MaxLoopTransformer());
     }
 }

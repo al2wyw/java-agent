@@ -19,15 +19,12 @@ public class CleanerTransformer implements ClassFileTransformer {
 
     private ClassPool cp = ClassPool.getDefault();
 
-    {
-        System.out.println("cleaner Transformer");
-    }
-
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
         String name = className.replace("/",".");
-        System.out.println("cleaner Transformer: "+name);
+
         if(name.equals("sun.misc.Cleaner")) {
+            System.out.println("start to transform sun.misc.Cleaner class");
             try {
                 ByteArrayInputStream bin = new ByteArrayInputStream(classfileBuffer);
 
