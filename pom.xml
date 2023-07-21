@@ -11,6 +11,7 @@
     <modules>
         <module>boot</module>
         <module>agent</module>
+        <module>maxloop-agent</module>
     </modules>
 
     <dependencyManagement>

@@ -17,8 +17,7 @@ public class Agent {
         for(int i = 0; i < klasss.length; i++){
             System.out.println(klasss[i].getName());
         }
-        inst.addTransformer(new MyClassTransformer());
-        inst.addTransformer(new CleanerTransformer());
+        inst.addTransformer(new MaxLoopTransformer());
     }
 
     public static void agentmain(String agentArgs, Instrumentation inst) {
@@ -27,7 +26,6 @@ public class Agent {
         for(int i = 0; i < klasss.length; i++){
             System.out.println(klasss[i].getName());
         }
-        inst.addTransformer(new MyClassTransformer());
-        inst.addTransformer(new CleanerTransformer());
+        inst.addTransformer(new MaxLoopTransformer());
     }
 }

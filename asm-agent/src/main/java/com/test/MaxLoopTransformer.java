@@ -7,9 +7,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import net.sf.cglib.core.CodeEmitter;
+import net.sf.cglib.core.Local;
+import net.sf.cglib.core.Signature;
+import net.sf.cglib.transform.ClassEmitterTransformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.InsnList;
@@ -17,11 +22,6 @@ import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.MethodNode;
-import net.sf.cglib.core.CodeEmitter;
-import net.sf.cglib.core.Local;
-import net.sf.cglib.core.Signature;
-import net.sf.cglib.transform.ClassEmitterTransformer;
-import org.objectweb.asm.Type;
 
 /**
  * Created with IntelliJ IDEA.
