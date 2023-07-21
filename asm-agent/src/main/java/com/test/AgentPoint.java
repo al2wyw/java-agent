@@ -9,7 +9,7 @@ import java.lang.instrument.Instrumentation;
  * Time: 9:57
  * Desc:
  */
-public class Agent {
+public class AgentPoint {
 
     public static void premain(String agentArgs, Instrumentation inst) {
         System.out.println("Agent.premain");

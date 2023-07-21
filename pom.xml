@@ -11,7 +11,7 @@
     <modules>
         <module>boot</module>
         <module>agent</module>
-        <module>maxloop-agent</module>
+        <module>asm-agent</module>
     </modules>
 
     <dependencyManagement>

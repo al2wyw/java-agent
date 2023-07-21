@@ -35,8 +35,8 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Premain-Class>com.test.Agent</Premain-Class>
-                            <Agent-Class>com.test.Agent</Agent-Class>
+                            <Premain-Class>com.test.AgentPoint</Premain-Class>
+                            <Agent-Class>com.test.AgentPoint</Agent-Class>
                             <Can-Redefine-Classes>true</Can-Redefine-Classes>
                             <Can-Retransform-Classes>true</Can-Retransform-Classes>
                         </manifestEntries>

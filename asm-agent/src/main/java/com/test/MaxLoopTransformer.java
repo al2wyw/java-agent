@@ -1,5 +1,8 @@
 package com.test;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
@@ -31,6 +34,16 @@ import org.objectweb.asm.tree.MethodNode;
  * Description:
  */
 public class MaxLoopTransformer implements ClassFileTransformer {
+
+    private static String outputDir;
+
+    static {
+        String dir = System.getProperty("transform.output.dir");
+        if (dir != null && !dir.equals("")) {
+            outputDir = dir;
+        }
+        System.out.println("MaxLoopTransformer outputDir " + outputDir);
+    }
 
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
@@ -134,7 +147,19 @@ public class MaxLoopTransformer implements ClassFileTransformer {
         cv.setTarget(classWriter);
 
         cn.accept(cv);
-        return classWriter.toByteArray();
+        byte[] content = classWriter.toByteArray();
+        if (outputDir != null) {
+            try {
+                String file = outputDir + File.separator + className + ".class";
+                FileOutputStream fout = new FileOutputStream(file);
+                fout.write(content);
+                fout.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return content;
     }
 
     public static class ByteCodeMaxLoopEmitter extends CodeEmitter {
